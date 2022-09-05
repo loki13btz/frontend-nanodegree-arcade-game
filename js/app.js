@@ -1,7 +1,6 @@
 const cellWidth = 101;
 const cellHeigth = 83;
 
-
 // Enemies our player must avoid
 var Enemy = function (col, row) {
   // Variables applied to each of our instances go here,
@@ -12,7 +11,7 @@ var Enemy = function (col, row) {
   this.sprite = "images/enemy-bug.png";
   this.x = col * cellWidth - 150;
   this.y = row * cellHeigth - 25;
-  this.speed = Math.random() * (50) + 300;
+  this.speed = Math.random() * 50 + 300;
 };
 
 // Update the enemy's position, required method for game
@@ -21,7 +20,7 @@ Enemy.prototype.update = function (dt) {
   // You should multiply any movement by the dt parameter
   // which will ensure the game runs at the same speed for
   // all computers.
-  if (this.x > 505){
+  if (this.x > 505) {
     this.x = -150;
     this.y = parseInt(Math.random() * 3 + 1) * cellHeigth - 25;
   }
@@ -42,32 +41,31 @@ const Player = function (col, row) {
   this.x = col * cellWidth;
   this.y = row * cellHeigth - 25;
 };
-Player.prototype.update = function () {
-};
+Player.prototype.update = function () {};
 Player.prototype.render = function (dt) {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 Player.prototype.handleInput = function (input) {
   switch (input) {
     case "left":
-        if(this.x>0){
-            this.x -= cellWidth;
-        }
+      if (this.x > 0) {
+        this.x -= cellWidth;
+      }
       break;
     case "up":
-        if(this.y>0){
-            this.y -= cellHeigth;
-        }
+      if (this.y > 0) {
+        this.y -= cellHeigth;
+      }
       break;
     case "right":
-        if(this.x<cellWidth*4){
-            this.x += cellWidth;
-        }
+      if (this.x < cellWidth * 4) {
+        this.x += cellWidth;
+      }
       break;
     case "down":
-        if(this.y<cellHeigth*4){
-            this.y += cellHeigth;
-        }
+      if (this.y < cellHeigth * 4) {
+        this.y += cellHeigth;
+      }
       break;
   }
 };
@@ -76,16 +74,20 @@ Player.prototype.handleInput = function (input) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 const allEnemies = [new Enemy(1, 2), new Enemy(2, 3), new Enemy(3, 1)];
-const player = new Player(2,5);
+const player = new Player(2, 5);
 
-function checkCollisions(enemies,player) {
-    enemies.forEach(enemy => {
-    if((enemy.x - 50) < player.x && player.x < (enemy.x + 50) && enemy.y===player.y){
-        console.log([enemy.x + 5, player.x, enemy.x - 5]);
-        player.x = 2 * cellWidth;
-        player.y = 5 * cellHeigth - 25;
+function checkCollisions(enemies, player) {
+  enemies.forEach((enemy) => {
+    if (
+      enemy.x - 50 < player.x &&
+      player.x < enemy.x + 50 &&
+      enemy.y === player.y
+    ) {
+      console.log([enemy.x + 5, player.x, enemy.x - 5]);
+      player.x = 2 * cellWidth;
+      player.y = 5 * cellHeigth - 25;
     }
-});
+  });
 }
 
 // This listens for key presses and sends the keys to your
