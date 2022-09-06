@@ -13,7 +13,6 @@ Enemy.prototype.reset = function (col, row) {
   this.speed = Math.random() * 50 + 300;
 };
 
-
 Enemy.prototype.update = function (dt) {
   if (this.x > 505) {
     this.reset(0, parseInt(Math.random() * 3 + 1));
@@ -26,16 +25,27 @@ Enemy.prototype.render = function () {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
 const Player = function (col, row) {
   this.sprite = "images/char-boy.png";
   this.x = col * cellWidth;
   this.y = row * cellHeigth - 25;
 };
-Player.prototype.update = function () {};
+
+Player.prototype.reset = function(){
+  player.x = 2 * cellWidth;
+  player.y = 5 * cellHeigth - 25;
+}
+
+Player.prototype.update = function () {
+  if (this.y === -25) {
+    this.reset();
+  }
+};
+
 Player.prototype.render = function (dt) {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
 Player.prototype.handleInput = function (input) {
   switch (input) {
     case "left":
@@ -61,7 +71,6 @@ Player.prototype.handleInput = function (input) {
   }
 };
 
-
 const allEnemies = [new Enemy(1, 2), new Enemy(2, 3), new Enemy(3, 1)];
 const player = new Player(2, 5);
 
@@ -72,9 +81,7 @@ function checkCollisions(enemies, player) {
       player.x < enemy.x + 50 &&
       enemy.y === player.y
     ) {
-      console.log([enemy.x + 5, player.x, enemy.x - 5]);
-      player.x = 2 * cellWidth;
-      player.y = 5 * cellHeigth - 25;
+      player.reset()
     }
   });
 }
